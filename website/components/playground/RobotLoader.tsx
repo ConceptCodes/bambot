@@ -41,14 +41,17 @@ function Loader() {
 
 export default function RobotLoader({ robotName }: RobotLoaderProps) {
   const [jointDetails, setJointDetails] = useState<JointDetails[]>([]);
-  const [showControlPanel, setShowControlPanel] = useState(() => {
+  const [activeModal, setActiveModal] = useState<'keyboard' | 'leader' | 'chat' | null>(() => {
     if (typeof window !== "undefined") {
-      return window.innerWidth >= 900;
+      return window.innerWidth >= 900 ? 'keyboard' : null;
     }
-    return true;
+    return 'keyboard';
   });
-  const [showLeaderControl, setShowLeaderControl] = useState(false);
-  const [showChatControl, setShowChatControl] = useState(false);
+
+  // Derived states for backward compatibility
+  const showControlPanel = activeModal === 'keyboard';
+  const showLeaderControl = activeModal === 'leader';
+  const showChatControl = activeModal === 'chat';
   const config = robotConfigMap[robotName];
 
   // Get leader robot servo IDs (exclude continuous joint types)
@@ -93,7 +96,7 @@ export default function RobotLoader({ robotName }: RobotLoaderProps) {
       {/* LeaderControl overlay */}
       <LeaderControl
         show={showLeaderControl}
-        onHide={() => setShowLeaderControl(false)}
+        onHide={() => setActiveModal(null)}
         leaderControl={leaderControl}
         jointDetails={jointDetails}
         onSync={(leaderAngles: { servoId: number; angle: number }[]) => {
@@ -130,7 +133,7 @@ export default function RobotLoader({ robotName }: RobotLoaderProps) {
 
       <ControlPanel
         show={showControlPanel}
-        onHide={() => setShowControlPanel(false)}
+        onHide={() => setActiveModal(null)}
         updateJointsSpeed={updateJointsSpeed}
         jointStates={jointStates}
         updateJointDegrees={updateJointDegrees}
@@ -144,7 +147,7 @@ export default function RobotLoader({ robotName }: RobotLoaderProps) {
       />
       <ChatControl
         show={showChatControl}
-        onHide={() => setShowChatControl(false)}
+        onHide={() => setActiveModal(null)}
         robotName={robotName}
         systemPrompt={systemPrompt}
       />
@@ -154,16 +157,16 @@ export default function RobotLoader({ robotName }: RobotLoaderProps) {
           <div className="flex gap-2 max-w-md">
             <LeaderControlButton
               showControlPanel={showLeaderControl}
-              onToggleControlPanel={() => setShowLeaderControl((v) => !v)}
+              onToggleControlPanel={() => setActiveModal(showLeaderControl ? null : 'leader')}
             />
             <KeyboardControlButton
               showControlPanel={showControlPanel}
-              onToggleControlPanel={() => setShowControlPanel((v) => !v)}
+              onToggleControlPanel={() => setActiveModal(showControlPanel ? null : 'keyboard')}
             />
 
             <ChatControlButton
               showControlPanel={showChatControl}
-              onToggleControlPanel={() => setShowChatControl((v) => !v)}
+              onToggleControlPanel={() => setActiveModal(showChatControl ? null : 'chat')}
             />
 
             <GamepadControlButton
