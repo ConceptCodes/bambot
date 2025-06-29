@@ -1,16 +1,17 @@
+import { RiGamepadFill } from "@remixicon/react";
+
 import { ControlButtonProps } from "@/types";
 import GlassButton from "./GlassButton";
-import { RiKeyboardFill } from "@remixicon/react";
 
-export default function KeyboardControlButton({
+export default function GamepadControlButton({
   showControlPanel,
   onToggleControlPanel,
 }: ControlButtonProps) {
   return (
     <GlassButton
       onClick={onToggleControlPanel}
-      icon={<RiKeyboardFill size={24} />}
-      tooltip="Keyboard Control"
+      icon={<RiGamepadFill size={24} />}
+      tooltip="Gamepad Control"
       pressed={showControlPanel}
     />
   );

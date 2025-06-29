@@ -14,6 +14,7 @@ import { RobotScene } from "./RobotScene";
 import KeyboardControlButton from "../playground/controlButtons/KeyboardControlButton";
 import ChatControlButton from "../playground/controlButtons/ChatControlButton";
 import LeaderControlButton from "../playground/controlButtons/LeaderControlButton";
+import GamepadControlButton from "./controlButtons/GamepadContolButton";
 
 export type JointDetails = {
   name: string;
@@ -163,6 +164,11 @@ export default function RobotLoader({ robotName }: RobotLoaderProps) {
             <ChatControlButton
               showControlPanel={showChatControl}
               onToggleControlPanel={() => setShowChatControl((v) => !v)}
+            />
+
+            <GamepadControlButton
+              showControlPanel={isConnected}
+              onToggleControlPanel={() => {}}
             />
           </div>
         </div>

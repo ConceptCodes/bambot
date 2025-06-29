@@ -1,14 +1,10 @@
+import { ControlButtonProps } from "@/types";
 import GlassButton from "./GlassButton";
-
-interface LeaderControlButtonProps {
-  showControlPanel: boolean;
-  onToggleControlPanel: () => void;
-}
 
 export default function LeaderControlButton({
   showControlPanel,
   onToggleControlPanel,
-}: LeaderControlButtonProps) {
+}: ControlButtonProps) {
   return (
     <GlassButton
       onClick={onToggleControlPanel}
